@@ -1,0 +1,17 @@
+{
+  "metrics": {
+    "total": 0,
+    "web_errors": 0,
+    "web_warnings": 0,
+    "web_complete": 0,
+    "web_total": 0,
+    "auth_errors": 0,
+    "auth_warnings": 0,
+    "auth_complete": 0,
+    "auth_total": 0,
+    "database_errors": 0,
+    "database_warnings": 0,
+    "database_complete": 0,
+    "database_total": 0
+  }
+}
