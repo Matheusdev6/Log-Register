@@ -3,5 +3,6 @@ package Model;
 public enum Status {
     NOMINAL,
     WARNING,
-    ERROR
+    ERROR,
+    NOT_APPLICABLE
 }

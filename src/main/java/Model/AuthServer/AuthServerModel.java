@@ -1,13 +1,9 @@
 package Model.AuthServer;
 import Model.Status;
-
+import java.util.Random;
 public class AuthServerModel {
     private Status status;
     private boolean loggedIn;
-    public AuthServerModel(Status status, boolean loggedIn) {
-        this.status = status;
-        this.loggedIn = loggedIn;
-    }
     public AuthServerModel() {}
 
     public Status getStatus() {
@@ -23,4 +19,5 @@ public class AuthServerModel {
     public void setStatus(Status status) {
         this.status = status;
     }
+
 }
