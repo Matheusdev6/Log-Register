@@ -11,12 +11,11 @@ public class AuthServerService {
         this.authServerModel = authServerModel;
     }
     public void AuthSuccess(){
-        boolean randomBoolean = new Random().nextBoolean();
-        authServerModel.setLoggedIn(randomBoolean);
-        if (randomBoolean) {
+        int number = new Random().nextInt(101);
+        if (number < 80) {
             authServerModel.setStatus(Status.NOMINAL);
         }
-        else {
+        else  {
             authServerModel.setStatus(Status.ERROR);
         }
     }

@@ -1,5 +1,6 @@
 package Service.WebServer;
 
+import Model.Status;
 import Model.WebServer.WebServerModel;
 import Service.AuthServer.AuthServerService;
 import Service.DatabaseServer.DatabaseServerService;
@@ -8,23 +9,18 @@ import java.util.Random;
 
 public class WebServerService {
     WebServerModel webServerModel;
-    AuthServerService authServerService;
-    DatabaseServerService databaseServerService;
-    public WebServerService(WebServerModel webServerModel, AuthServerService authServerService, DatabaseServerService databaseServerService) {
-        this.webServerModel = webServerModel;
-        this.authServerService =  authServerService;
-        this.databaseServerService = databaseServerService;
+    public WebServerService() {
     }
-    boolean isOnline(){
-        // fazer lógica de integração entre os services
-        int  randomInteger = new Random().nextInt(2);
-        if(randomInteger==1){
-            return true;
+    public void webServerSuccess(){
+        int  randomInteger = new Random().nextInt(101);
+        if (randomInteger < 90) {
+            webServerModel.setStatus(Status.NOMINAL);
+        }  else if (randomInteger < 95) {
+            webServerModel.setStatus(Status.WARNING);
+        } else{
+            webServerModel.setStatus(Status.ERROR);
         }
-        else{
 
-            return false;
-        }
     }
 
 }
