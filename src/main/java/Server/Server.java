@@ -34,15 +34,22 @@ public class Server {
                 if (databaseStatus == Status.NOMINAL) {
                     this.responseModel.setStatus(Status.SUCCESS);
                 } else {
-                    fail("DATABASE ERROR");
+                    fail("DATABASE");
                 }
             } else {
-                fail("AUTH ERROR");
+                fail("AUTH");
             }
         } else {
-            fail("WEB ERROR");
+            fail("WEB");
         }
-        System.out.println(this.responseModel.getStatus().getMessage());
+        if (this.responseModel.getStatus() == Status.ERROR) {
+            System.out.println(this.responseModel.getStatus().getMessage());
+            System.out.println("Error in : " + this.responseModel.getPlace());
+            System.out.println();
+        } else {
+            System.out.println(this.responseModel.getStatus().getMessage());
+            System.out.println();
+        }
         return responseModel;
     }
 }

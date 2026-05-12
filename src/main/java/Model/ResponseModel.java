@@ -11,9 +11,11 @@ public class ResponseModel {
     public Status getStatus() {
         return status;
     }
+
     public String getPlace() {
         return place;
     }
+
     public void setPlace(String place) {
         this.place = place;
     }
