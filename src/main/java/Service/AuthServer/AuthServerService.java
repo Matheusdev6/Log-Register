@@ -10,7 +10,7 @@ public class AuthServerService {
     public AuthServerService(AuthServerModel authServerModel) {
         this.authServerModel = authServerModel;
     }
-    public void AuthSuccess(){
+    public Status AuthSuccess(){
         int number = new Random().nextInt(101);
         if (number < 80) {
             authServerModel.setStatus(Status.NOMINAL);
@@ -18,5 +18,6 @@ public class AuthServerService {
         else  {
             authServerModel.setStatus(Status.ERROR);
         }
+        return authServerModel.getStatus();
     }
 }

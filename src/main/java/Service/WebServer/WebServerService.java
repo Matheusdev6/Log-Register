@@ -2,16 +2,13 @@ package Service.WebServer;
 
 import Model.Status;
 import Model.WebServer.WebServerModel;
-import Service.AuthServer.AuthServerService;
-import Service.DatabaseServer.DatabaseServerService;
-
 import java.util.Random;
 
 public class WebServerService {
     WebServerModel webServerModel;
     public WebServerService() {
     }
-    public void webServerSuccess(){
+    public Status webServerSuccess(){
         int  randomInteger = new Random().nextInt(101);
         if (randomInteger < 90) {
             webServerModel.setStatus(Status.NOMINAL);
@@ -20,7 +17,6 @@ public class WebServerService {
         } else{
             webServerModel.setStatus(Status.ERROR);
         }
-
+        return webServerModel.getStatus();
     }
-
 }

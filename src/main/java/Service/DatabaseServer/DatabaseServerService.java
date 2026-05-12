@@ -8,7 +8,7 @@ import java.util.Random;
 public class DatabaseServerService {
     DatabaseServerModel databaseServerModel;
     public DatabaseServerService() {}
-    public void DBSuccess(){
+    public Status DBSuccess(){
         int number = new Random().nextInt(101);
         if  (number < 70) {
             databaseServerModel.setStatus(Status.NOMINAL);
@@ -17,5 +17,6 @@ public class DatabaseServerService {
         } else{
             databaseServerModel.setStatus(Status.ERROR);
         }
+        return databaseServerModel.getStatus();
     }
 }
