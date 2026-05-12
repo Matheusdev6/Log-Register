@@ -7,8 +7,8 @@ import java.util.Random;
 
 public class AuthServerService {
     AuthServerModel authServerModel;
-    public AuthServerService(AuthServerModel authServerModel) {
-        this.authServerModel = authServerModel;
+    public AuthServerService() {
+        authServerModel = new AuthServerModel();
     }
     public Status AuthSuccess(){
         int number = new Random().nextInt(101);

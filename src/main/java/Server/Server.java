@@ -13,42 +13,36 @@ public class Server {
     WebServerService webServerService;
     RequestModel requestModel;
     ResponseModel responseModel;
-    public Server(AuthServerService authServerService, DatabaseServerService databaseServerService, WebServerService webServerService, RequestModel requestModel, ResponseModel responseModel) {
-        this.authServerService = authServerService;
-        this.databaseServerService = databaseServerService;
-        this.webServerService = webServerService;
-        this.requestModel = requestModel;
-        this.responseModel = responseModel;
+    public Server() {
+        this.authServerService = new AuthServerService();
+        this.databaseServerService = new DatabaseServerService();
+        this.webServerService = new WebServerService();
+        this.requestModel = new RequestModel();
+        this.responseModel = new ResponseModel();
     }
 
     public void fail(String place){
         responseModel.setStatus(Status.ERROR);
         responseModel.setPlace(place);
     }
-    public ResponseModel run(Server server) {
-        Status webstatus = webServerService.webServerSuccess();
-        if(webstatus == Status.NOMINAL) {
-            Status authStatus = authServerService.AuthSuccess();
-            if(authStatus == Status.NOMINAL) {
-                Status databaseStatus = databaseServerService.DBSuccess();
-                if(databaseStatus == Status.NOMINAL) {
+    public ResponseModel run() {
+        Status webstatus = this.webServerService.webServerSuccess();
+        if (webstatus == Status.NOMINAL) {
+            Status authStatus = this.authServerService.AuthSuccess();
+            if (authStatus == Status.NOMINAL) {
+                Status databaseStatus = this.databaseServerService.DBSuccess();
+                if (databaseStatus == Status.NOMINAL) {
                     this.responseModel.setStatus(Status.SUCCESS);
-                    System.out.println(this.responseModel.getStatus().getMessage());
-                }
-                else{
+                } else {
                     fail("DATABASE ERROR");
-                    System.out.println(this.responseModel.getStatus().getMessage());
                 }
-            } else{
-                    fail("AUTH ERROR");
-                    System.out.println(this.responseModel.getStatus().getMessage());
+            } else {
+                fail("AUTH ERROR");
             }
-        } else{
+        } else {
             fail("WEB ERROR");
-            System.out.println(this.responseModel.getStatus().getMessage());
         }
+        System.out.println(this.responseModel.getStatus().getMessage());
         return responseModel;
     }
-    public Server( )
-    {}
 }

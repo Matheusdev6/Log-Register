@@ -7,6 +7,7 @@ import java.util.Random;
 public class WebServerService {
     WebServerModel webServerModel;
     public WebServerService() {
+        webServerModel = new WebServerModel();
     }
     public Status webServerSuccess(){
         int  randomInteger = new Random().nextInt(101);
