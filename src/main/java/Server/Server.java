@@ -25,7 +25,7 @@ public class Server {
         responseModel.setStatus(Status.ERROR);
         responseModel.setPlace(place);
     }
-    public ResponseModel run() {
+    public ResponseModel runAndWrite() {
         Status webstatus = this.webServerService.webServerSuccess();
         if (webstatus == Status.NOMINAL) {
             Status authStatus = this.authServerService.AuthSuccess();
@@ -43,10 +43,14 @@ public class Server {
             fail("WEB");
         }
         if (this.responseModel.getStatus() == Status.ERROR) {
+            System.out.printf("Request ID: %s\n",this.requestModel.getId());
+            System.out.println("Request TIME: " + this.requestModel.getTimestamp());
             System.out.println(this.responseModel.getStatus().getMessage());
             System.out.println("Error in : " + this.responseModel.getPlace());
             System.out.println();
         } else {
+            System.out.printf("Request ID: %s\n",this.requestModel.getId());
+            System.out.println("Request TIME: " + this.requestModel.getTimestamp());
             System.out.println(this.responseModel.getStatus().getMessage());
             System.out.println();
         }

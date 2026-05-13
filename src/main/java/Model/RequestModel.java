@@ -10,4 +10,10 @@ public class RequestModel {
         this.timestamp = LocalDateTime.now();
         this.id = UUID.randomUUID();
     }
+    public UUID getId() {
+        return id;
+    }
+    public LocalDateTime getTimestamp() {
+        return timestamp;
+    }
 }
