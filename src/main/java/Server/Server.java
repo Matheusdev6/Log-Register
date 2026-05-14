@@ -6,6 +6,7 @@ import Model.Status;
 import Service.AuthServer.AuthServerService;
 import Service.DatabaseServer.DatabaseServerService;
 import Service.WebServer.WebServerService;
+import com.google.gson.Gson;
 
 public class Server {
     AuthServerService authServerService;
@@ -25,7 +26,7 @@ public class Server {
         responseModel.setStatus(Status.ERROR);
         responseModel.setPlace(place);
     }
-    public ResponseModel runAndWrite() {
+    public void runAndWrite(String fileName) {
         Status webstatus = this.webServerService.webServerSuccess();
         if (webstatus == Status.NOMINAL) {
             Status authStatus = this.authServerService.AuthSuccess();
@@ -42,18 +43,11 @@ public class Server {
         } else {
             fail("WEB");
         }
-        if (this.responseModel.getStatus() == Status.ERROR) {
-            System.out.printf("Request ID: %s\n",this.requestModel.getId());
-            System.out.println("Request TIME: " + this.requestModel.getTimestamp());
-            System.out.println(this.responseModel.getStatus().getMessage());
-            System.out.println("Error in : " + this.responseModel.getPlace());
-            System.out.println();
-        } else {
-            System.out.printf("Request ID: %s\n",this.requestModel.getId());
-            System.out.println("Request TIME: " + this.requestModel.getTimestamp());
-            System.out.println(this.responseModel.getStatus().getMessage());
-            System.out.println();
+        JsonObject jsonObject = new JsonObject(this.requestModel, this.responseModel);
+        try{
+            jsonObject.jsonWriting(jsonObject,fileName);
+        } catch(Exception e){
+            throw new RuntimeException();
         }
-        return responseModel;
     }
 }
