@@ -4,8 +4,10 @@ import Model.RequestModel;
 import Model.ResponseModel;
 import Model.Status;
 import Service.AuthServer.AuthServerService;
+import Service.DBConnector;
 import Service.DatabaseServer.DatabaseServerService;
 import Service.WebServer.WebServerService;
+import java.sql.Connection;
 
 public class Server {
     AuthServerService authServerService;
@@ -27,6 +29,8 @@ public class Server {
     }
     public void runAndWrite(String fileName) {
         Status webstatus = this.webServerService.webServerSuccess();
+        DBConnector dbConnector = new DBConnector();
+        Connection conection = DBConnector.getConnection();
         if (webstatus == Status.NOMINAL) {
             Status authStatus = this.authServerService.AuthSuccess();
             if (authStatus == Status.NOMINAL) {
@@ -42,5 +46,7 @@ public class Server {
         } else {
             fail("WEB");
         }
+        String example = "test";
+        // montar DAO e funções CRUD
     }
 }
