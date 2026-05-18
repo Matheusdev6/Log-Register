@@ -6,7 +6,6 @@ import Model.Status;
 import Service.AuthServer.AuthServerService;
 import Service.DatabaseServer.DatabaseServerService;
 import Service.WebServer.WebServerService;
-import com.google.gson.Gson;
 
 public class Server {
     AuthServerService authServerService;
@@ -42,12 +41,6 @@ public class Server {
             }
         } else {
             fail("WEB");
-        }
-        JsonObject jsonObject = new JsonObject(this.requestModel, this.responseModel);
-        try{
-            jsonObject.jsonWriting(jsonObject,fileName);
-        } catch(Exception e){
-            throw new RuntimeException();
         }
     }
 }
