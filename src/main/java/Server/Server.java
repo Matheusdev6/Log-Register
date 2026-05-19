@@ -23,14 +23,19 @@ public class Server {
         this.responseModel = new ResponseModel();
     }
 
+    public RequestModel getRequestModel() {
+        return requestModel;
+    }
+    public ResponseModel getResponseModel() {
+        return responseModel;
+    }
+
     public void fail(String place){
         responseModel.setStatus(Status.ERROR);
         responseModel.setPlace(place);
     }
-    public void runAndWrite(String fileName) {
+    public void run() {
         Status webstatus = this.webServerService.webServerSuccess();
-        DBConnector dbConnector = new DBConnector();
-        Connection conection = DBConnector.getConnection();
         if (webstatus == Status.NOMINAL) {
             Status authStatus = this.authServerService.AuthSuccess();
             if (authStatus == Status.NOMINAL) {
@@ -46,7 +51,5 @@ public class Server {
         } else {
             fail("WEB");
         }
-        String example = "test";
-        // montar DAO e funções CRUD
     }
 }
