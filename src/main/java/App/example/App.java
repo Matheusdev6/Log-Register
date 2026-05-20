@@ -9,7 +9,7 @@ public class App
         System.out.println("Simulating servers!");
         for (int i = 1; i <= 5; i++){
             DAO_Object dao = new DAO_Object();
-            dao.saveObject("Server_3");
+            dao.saveObject("S2");
         }
     }
 }
