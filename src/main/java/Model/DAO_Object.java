@@ -49,12 +49,39 @@ public class DAO_Object {
                         %s_requests = (SELECT MAX(id) FROM %s)
                       WHERE id = ?;
                      ""","report_DB",server,server,server,server,server,server,server,server,server,server,server);
+        String command_3 = String.format("""
+                UPDATE %s.Total_Data
+                SET
+                  total_success = (SELECT SUM(total_success) FROM (
+                  SELECT S1_success AS total_success FROM S1_Data
+                  UNION ALL
+                  SELECT S2_success AS total_success FROM S2_Data
+                  UNION ALL
+                  SELECT S3_success AS total_success FROM S3_Data
+                  )),
+                  total_errors = (SELECT SUM(total_errors) FROM (
+                  SELECT S1_errors AS total_errors FROM S1_Data
+                  UNION ALL
+                  SELECT S2_errors AS total_errors FROM S2_Data
+                  UNION ALL
+                  SELECT S3_errors AS total_errors FROM S3_Data
+                  )),
+                  total_requests = (SELECT SUM(total) FROM (
+                  SELECT S1_requests AS total FROM S1_Data
+                  UNION ALL
+                  SELECT S2_requests AS total FROM S2_Data
+                  UNION ALL
+                  SELECT S3_requests AS total FROM S3_Data
+                  ));
+                ""","report_DB");
         Server serverObject = new Server();
         Connection con = DBConnector.getConnection();
         serverObject.run();
         DAO_Object saveObject = new DAO_Object(serverObject.getRequestModel(), serverObject.getResponseModel());
         try{
             Statement attachStmt = con.createStatement();
+            Statement timeout = con.createStatement();
+            timeout.execute("PRAGMA busy_timeout=2000");
             attachStmt.execute(attachDatabases);
             attachStmt.close();
             PreparedStatement stmt = con.prepareStatement(command_1);
@@ -70,6 +97,10 @@ public class DAO_Object {
             stmt2.setString(4, "ERROR");
             stmt2.setInt(5,1);
             stmt2.execute();
+            PreparedStatement stmt3 = con.prepareStatement(command_3);
+            stmt3.execute();
+            stmt3.close();
+            stmt2.close();
             stmt.close();
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());

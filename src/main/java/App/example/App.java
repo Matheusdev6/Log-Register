@@ -38,7 +38,15 @@ public class App
 
         for (int i = 1; i <= 5; i++){
             DAO_Object dao = new DAO_Object();
+            dao.saveObject("S1");
+        }
+        for (int i = 1; i <= 5; i++){
+            DAO_Object dao = new DAO_Object();
             dao.saveObject("S2");
+        }
+        for (int i = 1; i <= 5; i++){
+            DAO_Object dao = new DAO_Object();
+            dao.saveObject("S3");
         }
     }
 }
