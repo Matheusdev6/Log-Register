@@ -36,17 +36,13 @@ public class App
             System.out.printf("Número escolhido: %d\n", escolha);
         }*/
 
-        for (int i = 1; i <= 5; i++){
-            DAO_Object dao = new DAO_Object();
+        DAO_Object dao = new DAO_Object();
+        /*for (int i = 1; i <= 5; i++){
             dao.saveObject("S1");
-        }
-        for (int i = 1; i <= 5; i++){
-            DAO_Object dao = new DAO_Object();
             dao.saveObject("S2");
-        }
-        for (int i = 1; i <= 5; i++){
-            DAO_Object dao = new DAO_Object();
             dao.saveObject("S3");
-        }
+        }*/
+        dao.display();
+
     }
 }

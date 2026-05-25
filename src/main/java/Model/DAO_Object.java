@@ -3,10 +3,8 @@ package Model;
 import Server.Server;
 import Service.DBConnector;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.security.spec.RSAOtherPrimeInfo;
+import java.sql.*;
 
 public class DAO_Object {
     String id_request;
@@ -53,29 +51,29 @@ public class DAO_Object {
                 UPDATE %s.Total_Data
                 SET
                   total_success = (SELECT SUM(total_success) FROM (
-                  SELECT S1_success AS total_success FROM S1_Data
+                  SELECT S1_success AS Total_success FROM S1_Data
                   UNION ALL
-                  SELECT S2_success AS total_success FROM S2_Data
+                  SELECT S2_success AS Total_success FROM S2_Data
                   UNION ALL
-                  SELECT S3_success AS total_success FROM S3_Data
+                  SELECT S3_success AS Total_success FROM S3_Data
                   )),
                   total_errors = (SELECT SUM(total_errors) FROM (
-                  SELECT S1_errors AS total_errors FROM S1_Data
+                  SELECT S1_errors AS Total_errors FROM S1_Data
                   UNION ALL
-                  SELECT S2_errors AS total_errors FROM S2_Data
+                  SELECT S2_errors AS Total_errors FROM S2_Data
                   UNION ALL
-                  SELECT S3_errors AS total_errors FROM S3_Data
+                  SELECT S3_errors AS Total_errors FROM S3_Data
                   )),
                   total_requests = (SELECT SUM(total) FROM (
-                  SELECT S1_requests AS total FROM S1_Data
+                  SELECT S1_requests AS Total FROM S1_Data
                   UNION ALL
-                  SELECT S2_requests AS total FROM S2_Data
+                  SELECT S2_requests AS Total FROM S2_Data
                   UNION ALL
-                  SELECT S3_requests AS total FROM S3_Data
+                  SELECT S3_requests AS Total FROM S3_Data
                   ));
                 ""","report_DB");
         Server serverObject = new Server();
-        Connection con = DBConnector.getConnection();
+        Connection con = DBConnector.getConnection("database.sqlite");
         serverObject.run();
         DAO_Object saveObject = new DAO_Object(serverObject.getRequestModel(), serverObject.getResponseModel());
         try{
@@ -104,6 +102,51 @@ public class DAO_Object {
             stmt.close();
         } catch (SQLException e) {
             System.out.println("SQLException: " + e.getMessage());
+        }
+    }
+
+    public void display(){
+        System.out.println("\t>>>>>REPORTS<<<<<");
+        Connection con = DBConnector.getConnection("report.sqlite");
+        String server = "";
+        String command = """
+                SELECT * FROM %s_Data;
+                """;
+        for(int i = 1; i <= 4; i++){
+            server = switch (i) {
+                case 1 -> "S1";
+                case 2 -> "S2";
+                case 3 -> "S3";
+                case 4 -> "Total";
+                default -> throw new IllegalStateException("Unexpected value: " + i);
+            };
+            try{
+                String query = String.format(command,server);
+                String tot = String.format("%s_requests",server);
+                String suc = String.format("%s_success",server);
+                String err = String.format("%s_errors",server);
+                PreparedStatement stmt = con.prepareStatement(query);
+                try (ResultSet rs = stmt.executeQuery()){
+                    while (rs.next()){
+                        int total =  rs.getInt(tot);
+                        int success = rs.getInt(suc);
+                        int error = rs.getInt(err);
+                        if(i!=4){
+                            System.out.printf("\tServer %d INFO:\n\n",i);
+                        } else{
+                            System.out.println("\tTotal INFO:\n");
+                        }
+                        System.out.printf("\tSuccess: %d\n\tError: %d\n\tTotal: %d\n", success, error,total);
+                        System.out.printf("\tSuccess rate, percentage, of %s : %.2f.\n",server,(float)(100*success/total));
+                        System.out.printf("\tError rate, percentage, of %s: %.2f.\n",server,(float)(100*error/total));
+                        System.out.println("\t----------------------");
+                    }
+                } catch (SQLException e){
+                    System.out.println("SQLException: " + e.getMessage());
+                }
+            } catch(SQLException e){
+                System.out.println("SQLException: " + e.getMessage());
+            }
         }
     }
 }
